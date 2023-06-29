@@ -41,7 +41,7 @@ enum layers{
 #define H_S LALT_T(KC_S)
 #define H_D LSFT_T(KC_D)
 #define H_F LCTL_T(KC_F)
-#define H_J RCTL_T(KC_J)
+#define H_J LCTL_T(KC_J)
 #define H_K RSFT_T(KC_K)
 #define H_L LALT_T(KC_L)
 #define H_SC RGUI_T(KC_SCLN)
