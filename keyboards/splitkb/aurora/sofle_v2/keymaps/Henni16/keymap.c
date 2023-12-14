@@ -8,6 +8,7 @@
  */
 
  // Home row mods
+ // Base Layer
 #define H_A LGUI_T(KC_A)
 #define H_S LALT_T(KC_S)
 #define H_D LSFT_T(KC_D)
@@ -16,6 +17,23 @@
 #define H_K RSFT_T(KC_K)
 #define H_L LALT_T(KC_L)
 #define H_SC RGUI_T(KC_SCLN)
+// Symbol Layer
+#define H_EX LGUI_T(KC_EXLM)
+#define H_MIN LALT_T(KC_MINS)
+#define H_PLUS LSFT_T(KC_PLUS)
+#define H_EQ LCTL_T(KC_EQL)
+#define H_LBR LCTL_T(KC_LCBR)
+#define H_RBR RSFT_T(KC_RCBR)
+#define H_GRV LALT_T(KC_GRV)
+#define H_QUES RGUI_T(KC_QUES)
+// Number Layer
+#define H_F4 LALT_T(KC_F4)
+#define H_F5 LSFT_T(KC_F5)
+#define H_F6 LCTL_T(KC_F6)
+#define H_4 LCTL_T(KC_4)
+#define H_5 RSFT_T(KC_5)
+#define H_6 LALT_T(KC_6)
+#define H_0 RGUI_T(KC_0)
 
 #define KC_TALK HYPR(KC_F4) // talk
 #define KC_PTT HYPR(KC_F1) // Push to talk
@@ -57,35 +75,71 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 			SEND_STRING("../");
 		}
 		return false;
+	case H_EX:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_EXLM); 
+                return false; 
+            }
+            break;
+	case H_PLUS:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_PLUS); 
+                return false;        
+            }
+            break;
+	case H_LBR:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_LCBR); 
+                return false;        
+            }
+            break;
+	case H_RBR:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_RCBR); 
+                return false;        
+            }
+            break;
+	case H_QUES:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_QUES); 
+                return false;        
+            }
+            break;
   }
   return true;
 }
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	[0] = LAYOUT(KC_GRV,  KC_1,  KC_2,    KC_3,    KC_4,    KC_5,        			 KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MU, 
-				 KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	 KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    KC_AE, 
-				 KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					 KC_H,    H_J,     H_K,     H_L,    H_SC,    KC_OE,
-				 LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, 
-				            	 COPY,    PASTE,   UNDO,    MO(1), EN2,     KC_BSPC, SPA3,    KC_TALK, KC_PTT,  KC_VA
+	[0] = LAYOUT(TG(4),  KC_1,  KC_2,    KC_3,    KC_4,    KC_5,        			 KC_6,   KC_7,    KC_8,    KC_9,   KC_0,    KC_MU, 
+				 KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,   KC_U,    KC_I,    KC_O,   KC_P,    KC_AE, 
+				 KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					         KC_H,   H_J,     H_K,     H_L,    H_SC,    KC_OE,
+				 LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, 
+				            	   COPY,    PASTE,   UNDO,    MO(1),   EN2,   KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
 	),
 	[1] = LAYOUT(_______,  _______,  _______,    _______,    _______,    _______,        			 _______,   _______, _______, _______, _______, _______, 
 				 _______,  KC_QUOT, KC_LABK,     KC_RABK,    KC_DQUO,    ARROW,                      KC_AMPR,   KC_LPRN, KC_RPRN, KC_PERC, KC_DLR,  KC_UE,
-				 _______,  KC_EXLM, KC_MINS,     KC_PLUS,    KC_EQL,     KC_HASH, 			         KC_PIPE,   KC_LBRC, KC_RBRC, KC_GRV,  KC_QUES, KC_SS, 
-				 _______,  KC_CIRC, KC_SLSH,     KC_ASTR,    KC_BSLS,    UPDIR,    KC_MUTE, XXXXXXX, KC_TILD,   KC_LCBR, KC_RCBR, KC_UNDS, KC_AT,   RALT(KC_5),
+				 _______,  H_EX,    H_MIN,       H_PLUS,     H_EQ,       KC_HASH, 			             KC_PIPE,   H_LBR,   H_RBR,   H_GRV,   H_QUES, KC_SS, 
+				 _______,  KC_CIRC, KC_SLSH,     KC_ASTR,    KC_BSLS,    UPDIR,    KC_MUTE, XXXXXXX, KC_TILD,   KC_LBRC, KC_RBRC, KC_UNDS, KC_AT,   RALT(KC_5),
 				            	     _______,    _______,    _______,    _______,  _______, _______, _______,   _______, _______, _______
 	),
 	[2] = LAYOUT(_______,  _______,  _______,    _______,  _______,  _______,        			 _______,  _______, _______, _______, _______, _______, 
 				 _______,  _______,  KC_F7,      KC_F8,    KC_F9,    KC_F12,                     _______,  KC_7,    KC_8,    KC_9,    _______, _______,
-				 _______,  _______,  KC_F4,      KC_F5,    KC_F6,    KC_F11, 			         _______,  KC_4,    KC_5,    KC_6,    KC_0,    _______, 
+				 _______,  KC_LGUI,  H_F4,       H_F5,     H_F6,     KC_F11, 			               _______,  H_4,     H_5,     H_6,     H_0,     _______, 
 				 _______,  _______,  KC_F1,      KC_F2,    KC_F3,    KC_F10,   KC_MUTE, XXXXXXX, _______,  KC_1,    KC_2,    KC_3,    _______, _______,
-				            	     _______,    _______,  _______,  _______,  _______, _______, _______,  _______, _______, _______
+				            	     _______,    _______,  _______,  _______,  _______, _______,   _______,  _______, _______, _______
 	),
 	[3] = LAYOUT(_______,  _______,  _______,    _______,  _______,    _______,        			  _______,   _______, _______, _______, _______, _______, 
-				 _______,  _______,  _______,    _______,  _______,    _______,                   _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
-				 _______,  _______,  KC_LALT,    KC_RSFT,  KC_RCTL,    _______, 			      KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, 
-				 _______,  _______,  _______,    _______,  _______,    _______, KC_MUTE, XXXXXXX, KC_PGDN,   _______, _______, _______, _______, _______,
-				            	     _______,    _______,  _______,    _______, _______, _______, _______,   _______, _______, _______
+				 _______,  _______,  _______,    _______,  _______,    _______,                     _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
+				 _______,  _______,  KC_LALT,    KC_RSFT,  KC_RCTL,    _______, 			              KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, 
+				 _______,  _______,  _______,    COPY,     PASTE,      _______, KC_MUTE, XXXXXXX,   KC_PGDN,   _______, _______, _______, _______, _______,
+				            	       _______,    _______,  _______,    _______, _______, _______,   _______,   _______, _______, _______
+	),
+  [4] = LAYOUT(_______,  _______,  _______,    _______,  _______,    _______,        			  _______,   _______, _______, _______, _______, _______, 
+				 _______,  KC_L,     KC_Q,       KC_W,     KC_E,    KC_R,                        _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
+				 _______,  KC_RSFT,  KC_A,       KC_S,     KC_D,    KC_F,    			              KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, 
+				 _______,  KC_U,     KC_Z,       KC_X,     KC_C,    _______, KC_MUTE, XXXXXXX,   KC_PGDN,   _______, _______, _______, _______, _______,
+				            	       KC_I,       KC_O,  _______,    KC_H,    KC_SPC,  _______,   _______,   _______, _______, _______
 	),
 };
 
@@ -94,7 +148,3 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 
 };
 #endif // defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
-
-
-
-
