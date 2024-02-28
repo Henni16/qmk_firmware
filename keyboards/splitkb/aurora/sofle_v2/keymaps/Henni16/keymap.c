@@ -50,7 +50,9 @@
 #define UNDO LCTL(KC_Z)
 #define PIPE S(KC_BSLS)
 #define DQUOT S(KC_QUOT)
+#define WIN_PW LALT(LCTL(KC_DEL))
 
+#define DEL2 LT(1, KC_DEL)
 #define EN2 LT(2, KC_ENT)
 #define SPA3 LT(3, KC_SPC)
 
@@ -115,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				 KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    KC_AE, 
 				 KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,    H_SC,    KC_OE,
 				 LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, 
-				            	 COPY,    PASTE,   UNDO,    MO(1), EN2,     KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
+				            	 COPY,    PASTE,   UNDO,    DEL2,  EN2,     KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
 	),
 	[1] = LAYOUT(_______,  _______,  _______,    _______,    _______,    _______,        			 _______,   _______, _______, _______, _______, _______, 
 				 _______,  KC_QUOT, KC_LABK,     KC_RABK,    KC_DQUO,    ARROW,                      KC_AMPR,   KC_LPRN, KC_RPRN, KC_PERC, KC_DLR,  KC_UE,
@@ -124,14 +126,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				            	     _______,    _______,    _______,    _______,  _______, _______, _______,   _______, _______, _______
 	),
 	[2] = LAYOUT(_______,  _______,  _______,    _______,  _______,  _______,        			 _______,  _______, _______, _______, _______, _______, 
-				 _______,  _______,  KC_F7,      KC_F8,    KC_F9,    KC_F12,                     _______,  KC_7,    KC_8,    KC_9,    _______, _______,
-				 _______,  KC_LGUI,  H_F4,       H_F5,     H_F6,     KC_F11, 		             _______,  H_4,     H_5,     H_6,     H_0,     _______, 
+				 _______,  _______,  KC_F7,      KC_F8,    KC_F9,    KC_F12,                     KC_COMM,  KC_7,    KC_8,    KC_9,    _______, _______,
+				 _______,  KC_LGUI,  H_F4,       H_F5,     H_F6,     KC_F11, 		             KC_DOT,   H_4,     H_5,     H_6,     H_0,     _______, 
 				 _______,  _______,  KC_F1,      KC_F2,    KC_F3,    KC_F10,   KC_MUTE, XXXXXXX, _______,  KC_1,    KC_2,    KC_3,    _______, _______,
 				            	     _______,    _______,  _______,  _______,  _______, _______, _______,  _______, _______, _______
 	),
-	[3] = LAYOUT(_______,  _______,  _______,    _______,  _______,    _______,        			   _______,   _______, _______, _______, _______, _______, 
+	[3] = LAYOUT(_______,  WIN_PW,   _______,    _______,  _______,    _______,        			   _______,   _______, _______, _______, _______, _______, 
 				 _______,  _______,  _______,    _______,  _______,    _______,                    _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
-				 _______,  _______,  KC_LALT,    KC_RSFT,  KC_LCTL,    _______, 			       KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, 
+				 _______,  KC_LGUI,  KC_LALT,    KC_RSFT,  KC_LCTL,    _______, 			       KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, 
 				 _______,  _______,  _______,    COPY,     PASTE,      _______, KC_MUTE, XXXXXXX,  KC_PGDN,   _______, _______, _______, _______, _______,
 				            	     _______,    _______,  _______,    _______, _______, _______,  _______,   _______, _______, _______
 	),
