@@ -18,16 +18,17 @@
 
 
 
-#define SPLIT_WATCHDOG_ENABLE
-#define SERIAL_PIO_USE_PIO1
+// #define SPLIT_WATCHDOG_ENABLE
+// #define SPLIT_WATCHDOG_TIMEOUT 1000
+// #define SERIAL_PIO_USE_PIO1
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 // #define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 0
 #define TAPPING_TERM 300
-#define SPLIT_USB_DETECT
-#define SPLIT_USB_TIMEOUT 60000
-#define SPLIT_USB_TIMEOUT_POLL 10
+// #define SPLIT_USB_DETECT
+// #define SPLIT_USB_TIMEOUT 60000
+// #define SPLIT_USB_TIMEOUT_POLL 10
 
 #define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 5000  /* Time (in ms) before the one shot key is released */
