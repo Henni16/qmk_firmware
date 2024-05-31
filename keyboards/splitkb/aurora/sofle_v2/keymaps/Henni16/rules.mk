@@ -1,3 +1,4 @@
 CAPS_WORD_ENABLE = yes
 CONVERT_TO=liatris
+OLED_ENABLE = yes
 
