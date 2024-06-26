@@ -37,8 +37,10 @@
 // Navigation Layer
 #define H_SWL RSFT_T(LGUI(KC_LEFT))
 #define H_SWR LCTL_T(LGUI(KC_RGHT))
+#define H_TABL LCTL(LSFT(KC_LBRC))
+#define H_TABR LCTL(LSFT(KC_RBRC))
 
-#define KC_TALK LCTL(KC_TILD) // talk
+#define KC_TALK MEH(KC_F13) // talk
 #define KC_PTT HYPR(KC_F1) // Push to talk
 #define KC_VA HYPR(KC_F2) // Voice activation
 #define KC_MU HYPR(KC_F3) // Mute
@@ -162,11 +164,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				            	     _______,    _______,  _______,  _______,  _______, _______, _______,  _______, _______, _______
 	),
 	[_NAVIGATION] = LAYOUT(
-				_______,  _______,  _______,    _______,  _______,    _______,        			 _______,   _______, _______, _______, _______, _______, 
-				_______,  _______,  _______,    _______,  _______,    _______,                   _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
-				_______,  KC_LGUI,  KC_LALT,    H_SWL,    H_SWR,    _______, 			         KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
-				_______,  _______,  _______,    COPY,     PASTE,      _______, KC_MUTE, XXXXXXX, KC_PGDN,   _______, _______, _______, _______, _______,
-				            	    _______,    _______,  _______,    _______, _______, _______, _______,   _______, _______, _______
+				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,    MEH(KC_F14), MEH(KC_F15), _______,                   _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
+				_______,  KC_LGUI,  KC_LALT,    H_SWL,       H_SWR,       _______, 			         KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+				_______,  _______,  _______,    H_TABL,      H_TABR,      _______, KC_MUTE, XXXXXXX, KC_PGDN,   _______, _______, _______, _______, _______,
+				            	    _______,    _______,     _______,     _______, _______, _______, _______,   _______, _______, _______
 	),
     [_GAMING] = LAYOUT(
 				_______,  _______,  _______,  _______,  _______,  _______,        		     _______,   _______, _______, _______, _______, _______, 
