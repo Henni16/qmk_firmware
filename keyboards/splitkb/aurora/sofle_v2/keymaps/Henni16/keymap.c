@@ -146,8 +146,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_WIN_DEFAULT] = LAYOUT(
 				_______, _______,  _______, _______, _______, _______,        		    _______, _______, _______, _______, _______, _______, 
 				KC_ESC,  KC_Q,     KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UE, 
-				KC_TAB,  H_A,      H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,     KC_OE,    KC_AE,
-				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSHIF, 
+				KC_TAB,  H_A,      H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,     H_SC,    KC_AE,
+				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,   KC_OE, RSHIF, 
 								   COPY,    PASTE,   KC_SS,   OSL(2), EN2,     KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
 	),
 	[_SYMBOL] = LAYOUT(
@@ -179,12 +179,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 
 };
-
-#if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-
-};
-#endif // defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
 
 #ifdef OLED_ENABLE
 
@@ -378,3 +372,45 @@ bool oled_task_user() {
 }
 
 #endif
+
+
+#if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+
+};
+#endif // defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
+
+/* The encoder_update_user is a function.
+ * It'll be called by QMK every time you turn the encoder.
+ *
+ * The index parameter tells you which encoder was turned. If you only have
+ * one encoder, the index will always be zero.
+ * 
+ * The clockwise parameter tells you the direction of the encoder. It'll be
+ * true when you turned the encoder clockwise, and false otherwise.
+ */
+bool encoder_update_user(uint8_t index, bool clockwise) {
+  /* With an if statement we can check which encoder was turned. */
+  if (index == 0) { /* First encoder */
+  /* Encoder not soldered*/
+  } 
+  if (index == 1) { /* First encoder */
+	switch(biton32(layer_state)){
+             case 2:
+                if (clockwise){
+                    tap_code(KC_VOLU);
+                } else{
+                    tap_code(KC_VOLD);
+                }
+                break;
+            default:
+                if (clockwise){
+                    tap_code(KC_WH_D);
+                } else{
+                    tap_code(KC_WH_U);
+                }
+                break;
+      }
+  }
+  return false;
+}
