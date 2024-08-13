@@ -126,6 +126,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
+// Tap Dance keycodes
+enum td_keycodes {
+    SPACE_NAV
+};
+
+// Define a type containing as many tapdance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_SINGLE_TAP
+} td_state_t;
+
+// Create a global instance of the tapdance state type
+static td_state_t td_state;
+
+// Declare your tapdance functions:
+
+// Function to determine the current tapdance state
+td_state_t cur_dance(tap_dance_state_t *state);
+
+// `finished` and `reset` functions for each tapdance keycode
+void spacenav_finished(tap_dance_state_t *state, void *user_data);
+void spacenav_reset(tap_dance_state_t *state, void *user_data);
+
 enum layer_names {
 	_MAC_DEFAULT,
 	_WIN_DEFAULT,
@@ -141,14 +167,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    CW_TOGG, 
 				KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					       KC_H,    H_J,     H_K,     H_L,    H_SC,    KC_ESC,
 				LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,  KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_DEL, 
-				            	COPY,    PASTE,   UNDO,    OSL(2),EN2,     KC_BSPC, SPA3,  KC_TALK, KC_PTT,  KC_VA
+				            	COPY,    PASTE,   UNDO,    OSL(2),EN2,     KC_BSPC, TD(SPACE_NAV),  KC_TALK, KC_PTT,  KC_VA
 	),
 	[_WIN_DEFAULT] = LAYOUT(
 				_______, _______,  _______, _______, _______, _______,        		    _______, _______, _______, _______, _______, _______, 
 				KC_ESC,  KC_Q,     KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UE, 
 				KC_TAB,  H_A,      H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,     H_SC,    KC_AE,
 				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,   KC_OE, RSHIF, 
-								   COPY,    PASTE,   KC_SS,   OSL(2), EN2,     KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
+								   COPY,    PASTE,   KC_SS,   OSL(2), EN2,     KC_BSPC, TD(SPACE_NAV),   KC_TALK, KC_PTT,  KC_VA
 	),
 	[_SYMBOL] = LAYOUT(
 				_______,  _______,  _______,    _______,    _______,    _______,        			_______,   _______, _______, _______, _______, _______, 
@@ -179,6 +205,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 
 };
+
+// Determine the tapdance state to return
+td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    }
+
+    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
+    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
+}
+
+// Handle the possible states for each tapdance keycode you define:
+void spacenav_finished(tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            tap_code16(KC_SPC);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(_NAVIGATION); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
+            break;
+        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+            register_code(KC_RALT);
+            tap_code16(KC_TAB);
+            unregister_code(KC_RALT);
+            break;
+        default:
+            break;
+    }
+}
+
+void spacenav_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case TD_SINGLE_HOLD:
+            layer_off(_NAVIGATION); 
+            break;
+        default:
+            break;
+    }
+}
+
+// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
+tap_dance_action_t tap_dance_actions[] = {
+    [SPACE_NAV] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, spacenav_finished, spacenav_reset)
+};
+
 
 #ifdef OLED_ENABLE
 
