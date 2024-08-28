@@ -32,12 +32,12 @@ __attribute__((weak)) void spi_init(void) {
         is_initialised = true;
 
         // Try releasing special pins for a short time
-        gpio_set_pin_input(SPI_SCK_PIN);
+        setPinInput(SPI_SCK_PIN);
         if (SPI_MOSI_PIN != NO_PIN) {
-            gpio_set_pin_input(SPI_MOSI_PIN);
+            setPinInput(SPI_MOSI_PIN);
         }
         if (SPI_MISO_PIN != NO_PIN) {
-            gpio_set_pin_input(SPI_MISO_PIN);
+            setPinInput(SPI_MISO_PIN);
         }
 
         chThdSleepMilliseconds(10);
@@ -64,14 +64,9 @@ __attribute__((weak)) void spi_init(void) {
 }
 
 bool spi_start(pin_t slavePin, bool lsbFirst, uint8_t mode, uint16_t divisor) {
-#if (SPI_USE_MUTUAL_EXCLUSION == TRUE)
-    spiAcquireBus(&SPI_DRIVER);
-#endif // (SPI_USE_MUTUAL_EXCLUSION == TRUE)
-
     if (spiStarted) {
         return false;
     }
-
 #if SPI_SELECT_MODE != SPI_SELECT_MODE_NONE
     if (slavePin == NO_PIN) {
         return false;
@@ -276,10 +271,10 @@ bool spi_start(pin_t slavePin, bool lsbFirst, uint8_t mode, uint16_t divisor) {
 #if SPI_SELECT_MODE == SPI_SELECT_MODE_PAD
     spiConfig.ssport = PAL_PORT(slavePin);
     spiConfig.sspad  = PAL_PAD(slavePin);
-    gpio_set_pin_output(slavePin);
+    setPinOutput(slavePin);
 #elif SPI_SELECT_MODE == SPI_SELECT_MODE_NONE
     if (slavePin != NO_PIN) {
-        gpio_set_pin_output(slavePin);
+        setPinOutput(slavePin);
     }
 #else
 #    error "Unsupported SPI_SELECT_MODE"
@@ -289,7 +284,7 @@ bool spi_start(pin_t slavePin, bool lsbFirst, uint8_t mode, uint16_t divisor) {
     spiSelect(&SPI_DRIVER);
 #if SPI_SELECT_MODE == SPI_SELECT_MODE_NONE
     if (slavePin != NO_PIN) {
-        gpio_write_pin_low(slavePin);
+        writePinLow(slavePin);
     }
 #endif
 
@@ -324,15 +319,11 @@ void spi_stop(void) {
     if (spiStarted) {
 #if SPI_SELECT_MODE == SPI_SELECT_MODE_NONE
         if (currentSlavePin != NO_PIN) {
-            gpio_write_pin_high(currentSlavePin);
+            writePinHigh(currentSlavePin);
         }
 #endif
         spiUnselect(&SPI_DRIVER);
         spiStop(&SPI_DRIVER);
         spiStarted = false;
     }
-
-#if (SPI_USE_MUTUAL_EXCLUSION == TRUE)
-    spiReleaseBus(&SPI_DRIVER);
-#endif // (SPI_USE_MUTUAL_EXCLUSION == TRUE)
 }
