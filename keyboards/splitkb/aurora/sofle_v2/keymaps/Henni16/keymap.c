@@ -478,9 +478,13 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             default:
                 if (clockwise){
-                    tap_code(KC_WH_D);
+                    tap_code(KC_DOWN);
+                    tap_code(KC_DOWN);
+                    tap_code(KC_DOWN);
                 } else{
-                    tap_code(KC_WH_U);
+                    tap_code(KC_UP);
+                    tap_code(KC_UP);
+                    tap_code(KC_UP);
                 }
                 break;
       }
