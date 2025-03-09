@@ -128,7 +128,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 // Tap Dance keycodes
 enum td_keycodes {
-    SPACE_NAV
+    SYM_SWITCH
 };
 
 // Define a type containing as many tapdance states as you need
@@ -149,8 +149,8 @@ static td_state_t td_state;
 td_state_t cur_dance(tap_dance_state_t *state);
 
 // `finished` and `reset` functions for each tapdance keycode
-void spacenav_finished(tap_dance_state_t *state, void *user_data);
-void spacenav_reset(tap_dance_state_t *state, void *user_data);
+void simswitch_finished(tap_dance_state_t *state, void *user_data);
+void simswitch_reset(tap_dance_state_t *state, void *user_data);
 
 enum layer_names {
 	_MAC_DEFAULT,
@@ -158,23 +158,24 @@ enum layer_names {
 	_SYMBOL,
 	_NUMBER,
 	_NAVIGATION,
+    _MEDIA,
 	_GAMING
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_MAC_DEFAULT] = LAYOUT(
-				TG(5),   KC_1, KC_2,    KC_3,    KC_4,    KC_5,        				       KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MU, 
+				TG(6),   KC_1, KC_2,    KC_3,    KC_4,     KC_5,       				       KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MU, 
 				KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    CW_TOGG, 
 				KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					       KC_H,    H_J,     H_K,     H_L,    H_SC,    KC_ESC,
 				LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,  KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_DEL, 
-				            	COPY,    PASTE,   UNDO,    OSL(2),EN2,     KC_BSPC, TD(SPACE_NAV),  KC_TALK, KC_PTT,  KC_VA
+				            	COPY,    PASTE,   OSL(5),  TD(SYM_SWITCH),EN2, KC_BSPC, SPA3,  KC_TALK, KC_PTT,  KC_VA
 	),
 	[_WIN_DEFAULT] = LAYOUT(
 				_______, _______,  _______, _______, _______, _______,        		    _______, _______, _______, _______, _______, _______, 
 				KC_ESC,  KC_Q,     KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UE, 
 				KC_TAB,  H_A,      H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,     H_SC,    KC_AE,
 				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,   KC_OE, RSHIF, 
-								   COPY,    PASTE,   KC_SS,   OSL(2), EN2,     KC_BSPC, TD(SPACE_NAV),   KC_TALK, KC_PTT,  KC_VA
+								   COPY,    PASTE,   KC_SS,   TD(SYM_SWITCH), EN2,   KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
 	),
 	[_SYMBOL] = LAYOUT(
 				_______,  _______,  _______,    _______,    _______,    _______,        			_______,   _______, _______, _______, _______, _______, 
@@ -194,6 +195,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				_______,  _______,  _______,    MEH(KC_F14), MEH(KC_F15), _______,                   _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
 				_______,  KC_LGUI,  KC_LALT,    H_SWL,       H_SWR,       _______, 			         KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
 				_______,  _______,  _______,    H_TABL,      H_TABR,      _______, KC_MUTE, XXXXXXX, KC_PGDN,   _______, _______, _______, _______, _______,
+				            	    _______,    _______,     _______,     _______, _______, _______, _______,   _______, _______, _______
+	),
+    [_MEDIA] = LAYOUT(
+				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,    _______,     _______,     _______,                   _______,   _______, _______, _______,  _______, _______,
+				_______,  _______,  _______,    _______,     _______,     _______, 			         _______,   KC_MPLY, KC_MNXT, KC_MPRV, _______, _______,
+				_______,  _______,  _______,    _______,     _______,     _______, _______, XXXXXXX, _______,   _______, _______, _______, _______, _______,
 				            	    _______,    _______,     _______,     _______, _______, _______, _______,   _______, _______, _______
 	),
     [_GAMING] = LAYOUT(
@@ -218,29 +226,31 @@ td_state_t cur_dance(tap_dance_state_t *state) {
 }
 
 // Handle the possible states for each tapdance keycode you define:
-void spacenav_finished(tap_dance_state_t *state, void *user_data) {
+void simswitch_finished(tap_dance_state_t *state, void *user_data) {
     td_state = cur_dance(state);
     switch (td_state) {
         case TD_SINGLE_TAP:
-            tap_code16(KC_SPC);
-            break;
+            // tap_code16(KC_SPC);
+            // break;
         case TD_SINGLE_HOLD:
-            layer_on(_NAVIGATION); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
+            set_oneshot_layer(_SYMBOL, ONESHOT_START); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
             break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code(KC_RALT);
-            tap_code16(KC_TAB);
-            unregister_code(KC_RALT);
+        case TD_DOUBLE_SINGLE_TAP:
+            register_code(KC_LSFT);
+            tap_code16(KC_F14);
+            unregister_code(KC_LSFT);
             break;
         default:
             break;
     }
 }
 
-void spacenav_reset(tap_dance_state_t *state, void *user_data) {
+void simswitch_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state) {
+        case TD_SINGLE_TAP:
         case TD_SINGLE_HOLD:
-            layer_off(_NAVIGATION); 
+            // layer_off(_NAVIGATION); 
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
             break;
         default:
             break;
@@ -249,7 +259,7 @@ void spacenav_reset(tap_dance_state_t *state, void *user_data) {
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 tap_dance_action_t tap_dance_actions[] = {
-    [SPACE_NAV] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, spacenav_finished, spacenav_reset)
+    [SYM_SWITCH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, simswitch_finished, simswitch_reset)
 };
 
 
@@ -435,6 +445,9 @@ bool oled_task_user() {
             break;
 		case _NUMBER :
             oled_write("Number", false);
+            break;
+        case _MEDIA:
+            oled_write("Media", false);
             break;
 		case _GAMING :
             oled_write("Let's\nGame", false);
