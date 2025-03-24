@@ -207,12 +207,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_GAMING] = LAYOUT(
 				_______,  _______,  _______,  _______,  _______,  _______,        		     _______,   _______, _______, _______, _______, _______, 
 			   	_______,  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,                      _______,   _______, _______, _______, _______, _______,
-		       	KC_LALT,  KC_RSFT,  KC_A,     KC_S,     KC_D,     KC_F,    			         _______,   _______, _______, _______, _______, _______, 
+		       	KC_LALT,  KC_LSFT,  KC_A,     KC_S,     KC_D,     KC_F,    			         _______,   _______, _______, _______, _______, _______, 
 			   	_______,  KC_LCTL,  KC_Z,     KC_X,     KC_C,     KC_V,    KC_MUTE, XXXXXXX, _______,   _______, _______, _______, _______, _______,
 				            	    KC_I,     KC_T,     KC_B,     KC_G,    KC_SPC,  KC_ENT,   _______,   _______, KC_F5,   KC_F6
 	),
 
 };
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+        case TD(SYM_SWITCH):
+            return true;
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
 
 // Determine the tapdance state to return
 td_state_t cur_dance(tap_dance_state_t *state) {
