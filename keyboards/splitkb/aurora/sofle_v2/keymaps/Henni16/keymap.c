@@ -83,75 +83,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 		return false;
 	case H_EX:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_EXLM); 
-                return false; 
+                tap_code16(KC_EXLM);
+                return false;
             }
             break;
 	case H_PLUS:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_PLUS); 
-                return false;        
+                tap_code16(KC_PLUS);
+                return false;
             }
             break;
 	case H_LBR:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_LCBR); 
-                return false;        
+                tap_code16(KC_LCBR);
+                return false;
             }
             break;
 	case H_RBR:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_RCBR); 
-                return false;        
+                tap_code16(KC_RCBR);
+                return false;
             }
             break;
 	case H_QUES:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_QUES); 
-                return false;        
+                tap_code16(KC_QUES);
+                return false;
             }
             break;
     case H_SWL:
             if (record->tap.count && record->event.pressed) {
-                tap_code16(LGUI(KC_LEFT)); 
-                return false;        
+                tap_code16(LGUI(KC_LEFT));
+                return false;
             }
             break;
     case H_SWR:
             if (record->tap.count && record->event.pressed) {
                 tap_code16(LGUI(KC_RGHT));
-                return false;        
+                return false;
             }
             break;
   }
   return true;
 }
-
-// Tap Dance keycodes
-enum td_keycodes {
-    SYM_SWITCH
-};
-
-// Define a type containing as many tapdance states as you need
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_SINGLE_TAP
-} td_state_t;
-
-// Create a global instance of the tapdance state type
-static td_state_t td_state;
-
-// Declare your tapdance functions:
-
-// Function to determine the current tapdance state
-td_state_t cur_dance(tap_dance_state_t *state);
-
-// `finished` and `reset` functions for each tapdance keycode
-void simswitch_finished(tap_dance_state_t *state, void *user_data);
-void simswitch_reset(tap_dance_state_t *state, void *user_data);
 
 enum layer_names {
 	_MAC_DEFAULT,
@@ -165,50 +139,50 @@ enum layer_names {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_MAC_DEFAULT] = LAYOUT(
-				TG(6),   KC_1, KC_2,    KC_3,    KC_4,     KC_5,       				       KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MU, 
-				KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    CW_TOGG, 
+				TG(6),   KC_1, KC_2,    KC_3,    KC_4,     KC_5,       				       KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MU,
+				KC_ESC,  KC_Q,  KC_W,    KC_E,    KC_R,    KC_T, 				 	       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    CW_TOGG,
 				KC_TAB,  H_A,   H_S,     H_D,     H_F,     KC_G, 					       KC_H,    H_J,     H_K,     H_L,    H_SC,    KC_ESC,
-				LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,  KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_DEL, 
-				            	COPY,    PASTE,   OSL(5),  TD(SYM_SWITCH),EN2, KC_BSPC, SPA3,  KC_TALK, KC_PTT,  KC_VA
+				LSHIF,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE, XXXXXXX, KC_N,  KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_DEL,
+				            	COPY,    PASTE,   OSL(5),  OSL(_SYMBOL),EN2, KC_BSPC, SPA3,  KC_TALK, KC_PTT,  KC_VA
 	),
 	[_WIN_DEFAULT] = LAYOUT(
-				_______, _______,  _______, _______, _______, _______,        		    _______, _______, _______, _______, _______, _______, 
-				KC_ESC,  KC_Q,     KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UE, 
+				_______, _______,  _______, _______, _______, _______,        		    _______, _______, _______, _______, _______, _______,
+				KC_ESC,  KC_Q,     KC_W,    KC_E,    KC_R,    KC_T, 				 	         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_UE,
 				KC_TAB,  H_A,      H_S,     H_D,     H_F,     KC_G, 					         KC_H,    H_J,     H_K,     H_L,     H_SC,    KC_AE,
-				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,   KC_OE, RSHIF, 
-								   COPY,    PASTE,   KC_SS,   TD(SYM_SWITCH), EN2,   KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
+				LSHIF,   KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,   KC_MUTE, XXXXXXX, KC_N,   KC_M,    KC_COMM, KC_DOT,   KC_OE, RSHIF,
+								   COPY,    PASTE,   KC_SS,   OSL(_SYMBOL), EN2,   KC_BSPC, SPA3,   KC_TALK, KC_PTT,  KC_VA
 	),
 	[_SYMBOL] = LAYOUT(
-				_______,  _______,  _______,    _______,    _______,    _______,        			_______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,    _______,    _______,    _______,        			_______,   _______, _______, _______, _______, _______,
 				_______,  KC_LABK, KC_RABK,     KC_QUOT,    KC_DQUO,    ARROW,                      KC_AMPR,   KC_LPRN, KC_RPRN, KC_PERC, KC_DLR,  KC_UE,
 				_______,  H_EX,    H_MIN,       H_PLUS,     H_EQ,       KC_HASH, 			        KC_PIPE,   H_LBR,   H_RBR,   H_GRV,   H_QUES,  TG(1),
 				_______,  KC_CIRC, KC_SLSH,     KC_ASTR,    KC_BSLS,    UPDIR,    KC_MUTE, XXXXXXX, KC_TILD,   KC_LBRC, KC_RBRC, KC_UNDS, KC_AT,   RALT(KC_5),
 				            	   _______,    _______,    _______,    _______,  _______,  _______, _______,   _______, _______, _______
 	),
-	[_NUMBER] = LAYOUT(_______,  _______,  _______,    _______,  _______,  _______,        			 _______,  _______, _______, _______, _______, _______, 
+	[_NUMBER] = LAYOUT(_______,  _______,  _______,    _______,  _______,  _______,        			 _______,  _______, _______, _______, _______, _______,
 				 _______,  _______,  KC_F7,      KC_F8,    KC_F9,    KC_F10,                     KC_COMM,  KC_7,    KC_8,    KC_9,    _______, _______,
-				 _______,  KC_LGUI,  H_F4,       H_F5,     H_F6,     KC_F11, 		             KC_DOT,   H_4,     H_5,     H_6,     H_0,     _______, 
+				 _______,  KC_LGUI,  H_F4,       H_F5,     H_F6,     KC_F11, 		             KC_DOT,   H_4,     H_5,     H_6,     H_0,     _______,
 				 _______,  _______,  KC_F1,      KC_F2,    KC_F3,    KC_F12,   KC_MUTE, XXXXXXX, _______,  KC_1,    KC_2,    KC_3,    _______, _______,
 				            	     _______,    _______,  _______,  _______,  _______, _______, _______,  _______, _______, _______
 	),
 	[_NAVIGATION] = LAYOUT(
-				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______,
 				_______,  _______,  _______,    MEH(KC_F14), MEH(KC_F15), _______,                   _______,   KC_HOME, KC_UP,   KC_END,  _______, _______,
 				_______,  KC_LGUI,  KC_LALT,    H_SWL,       H_SWR,       _______, 			         KC_PGUP,   KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
 				_______,  _______,  _______,    H_TABL,      H_TABR,      _______, KC_MUTE, XXXXXXX, KC_PGDN,   H_WIND,  _______, _______, _______, _______,
 				            	    _______,    _______,     _______,     _______, _______, _______, _______,   _______, _______, _______
 	),
     [_MEDIA] = LAYOUT(
-				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,    _______,     _______,     _______,        			 _______,   _______, _______, _______, _______, _______,
 				_______,  _______,  _______,    _______,     _______,     _______,                   _______,   _______, _______, _______,  _______, _______,
 				_______,  _______,  _______,    _______,     _______,     _______, 			         _______,   KC_MPLY, KC_MNXT, KC_MPRV, _______, _______,
 				_______,  _______,  _______,    _______,     _______,     _______, _______, XXXXXXX, _______,   _______, _______, _______, _______, _______,
 				            	    _______,    _______,     _______,     _______, _______, _______, _______,   _______, _______, _______
 	),
     [_GAMING] = LAYOUT(
-				_______,  _______,  _______,  _______,  _______,  _______,        		     _______,   _______, _______, _______, _______, _______, 
+				_______,  _______,  _______,  _______,  _______,  _______,        		     _______,   _______, _______, _______, _______, _______,
 			   	_______,  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,                      _______,   _______, _______, _______, _______, _______,
-		       	KC_LALT,  KC_LSFT,  KC_A,     KC_S,     KC_D,     KC_F,    			         _______,   _______, _______, _______, _______, _______, 
+		       	KC_LALT,  KC_LSFT,  KC_A,     KC_S,     KC_D,     KC_F,    			         _______,   _______, _______, _______, _______, _______,
 			   	_______,  KC_LCTL,  KC_Z,     KC_X,     KC_C,     KC_V,    KC_MUTE, XXXXXXX, _______,   _______, _______, _______, _______, _______,
 				            	    KC_I,     KC_T,     KC_B,     KC_G,    KC_SPC,  KC_ENT,   _______,   _______, KC_F5,   KC_F6
 	),
@@ -227,257 +201,12 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_BSPC:
         case KC_DEL:
         case KC_UNDS:
-        case TD(SYM_SWITCH):
+        case OSL(_SYMBOL):
             return true;
         default:
             return false;  // Deactivate Caps Word.
     }
 }
-
-// Determine the tapdance state to return
-td_state_t cur_dance(tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (!state->pressed) return TD_SINGLE_TAP;
-        else return TD_SINGLE_HOLD;
-    }
-
-    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
-    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
-}
-
-// Handle the possible states for each tapdance keycode you define:
-void simswitch_finished(tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            // tap_code16(KC_SPC);
-            // break;
-        case TD_SINGLE_HOLD:
-            set_oneshot_layer(_SYMBOL, ONESHOT_START); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            register_code(KC_LSFT);
-            tap_code16(KC_F14);
-            unregister_code(KC_LSFT);
-            break;
-        default:
-            break;
-    }
-}
-
-void simswitch_reset(tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-        case TD_SINGLE_HOLD:
-            // layer_off(_NAVIGATION); 
-            clear_oneshot_layer_state(ONESHOT_PRESSED);
-            break;
-        default:
-            break;
-    }
-}
-
-// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
-tap_dance_action_t tap_dance_actions[] = {
-    [SYM_SWITCH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, simswitch_finished, simswitch_reset)
-};
-
-
-#ifdef OLED_ENABLE
-
-void render_logo(void) {
-    static const char PROGMEM aurora_logo[] = {
-        0x00, 0x00, 0x00, 0xe0, 0x00, 0xf8, 0xc0, 0xf8, 0xe0, 0xc0, 0xfc, 0x00, 0x7e, 0x18, 0x00, 0x80, 
-        0x00, 0x02, 0x80, 0xf0, 0x00, 0xc0, 0x80, 0xf8, 0xc0, 0xe0, 0x70, 0x60, 0x3c, 0x38, 0x3c, 0x1c, 
-        0x00, 0x3f, 0x0c, 0x0f, 0x1f, 0x03, 0x07, 0x01, 0xc3, 0x00, 0xe0, 0x80, 0x00, 0xe0, 0x80, 0xf8, 
-        0x80, 0xc0, 0xf7, 0xc7, 0x6f, 0x7b, 0x39, 0x30, 0x00, 0x80, 0x00, 0xc0, 0x00, 0xc0, 0xc2, 0xe0, 
-        0x00, 0x40, 0x38, 0x30, 0x38, 0x1e, 0x18, 0x1e, 0x0f, 0x0c, 0x07, 0x07, 0x07, 0x03, 0x03, 0x21, 
-        0x21, 0x31, 0x30, 0x18, 0x18, 0x1c, 0x08, 0x0c, 0x0e, 0x07, 0x06, 0x07, 0x03, 0xc3, 0x03, 0x01, 
-        0x4c, 0xcc, 0xc2, 0xc2, 0x41, 0x49, 0x09, 0x2b, 0x2a, 0x6a, 0x6e, 0x24, 0x24, 0x04, 0x92, 0x92, 
-        0xb1, 0xf1, 0xf1, 0xf2, 0xe6, 0xa4, 0xa4, 0x04, 0x04, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28
-    };
-    oled_write_raw_P(aurora_logo, sizeof(aurora_logo));
-    oled_set_cursor(0, 4);
-}
-
-void render_logo_text(void) {
-    oled_write_P(PSTR("sofle"), false);
-}
-
-void render_space(void) {
-    oled_write_P(PSTR("     "), false);
-}
-
-void render_mod_status_gui_alt(uint8_t modifiers) {
-    static const char PROGMEM gui_off_1[] = {0x85, 0x86, 0};
-    static const char PROGMEM gui_off_2[] = {0xa5, 0xa6, 0};
-    static const char PROGMEM gui_on_1[] = {0x8d, 0x8e, 0};
-    static const char PROGMEM gui_on_2[] = {0xad, 0xae, 0};
-
-    static const char PROGMEM alt_off_1[] = {0x87, 0x88, 0};
-    static const char PROGMEM alt_off_2[] = {0xa7, 0xa8, 0};
-    static const char PROGMEM alt_on_1[] = {0x8f, 0x90, 0};
-    static const char PROGMEM alt_on_2[] = {0xaf, 0xb0, 0};
-
-    // fillers between the modifier icons bleed into the icon frames
-    static const char PROGMEM off_off_1[] = {0xc5, 0};
-    static const char PROGMEM off_off_2[] = {0xc6, 0};
-    static const char PROGMEM on_off_1[] = {0xc7, 0};
-    static const char PROGMEM on_off_2[] = {0xc8, 0};
-    static const char PROGMEM off_on_1[] = {0xc9, 0};
-    static const char PROGMEM off_on_2[] = {0xca, 0};
-    static const char PROGMEM on_on_1[] = {0xcb, 0};
-    static const char PROGMEM on_on_2[] = {0xcc, 0};
-
-    if(modifiers & MOD_MASK_GUI) {
-        oled_write_P(gui_on_1, false);
-    } else {
-        oled_write_P(gui_off_1, false);
-    }
-
-    if ((modifiers & MOD_MASK_GUI) && (modifiers & MOD_MASK_ALT)) {
-        oled_write_P(on_on_1, false);
-    } else if(modifiers & MOD_MASK_GUI) {
-        oled_write_P(on_off_1, false);
-    } else if(modifiers & MOD_MASK_ALT) {
-        oled_write_P(off_on_1, false);
-    } else {
-        oled_write_P(off_off_1, false);
-    }
-
-    if(modifiers & MOD_MASK_ALT) {
-        oled_write_P(alt_on_1, false);
-    } else {
-        oled_write_P(alt_off_1, false);
-    }
-
-    if(modifiers & MOD_MASK_GUI) {
-        oled_write_P(gui_on_2, false);
-    } else {
-        oled_write_P(gui_off_2, false);
-    }
-
-    if (modifiers & MOD_MASK_GUI & MOD_MASK_ALT) {
-        oled_write_P(on_on_2, false);
-    } else if(modifiers & MOD_MASK_GUI) {
-        oled_write_P(on_off_2, false);
-    } else if(modifiers & MOD_MASK_ALT) {
-        oled_write_P(off_on_2, false);
-    } else {
-        oled_write_P(off_off_2, false);
-    }
-
-    if(modifiers & MOD_MASK_ALT) {
-        oled_write_P(alt_on_2, false);
-    } else {
-        oled_write_P(alt_off_2, false);
-    }
-}
-
-void render_mod_status_ctrl_shift(uint8_t modifiers) {
-    static const char PROGMEM ctrl_off_1[] = {0x89, 0x8a, 0};
-    static const char PROGMEM ctrl_off_2[] = {0xa9, 0xaa, 0};
-    static const char PROGMEM ctrl_on_1[] = {0x91, 0x92, 0};
-    static const char PROGMEM ctrl_on_2[] = {0xb1, 0xb2, 0};
-
-    static const char PROGMEM shift_off_1[] = {0x8b, 0x8c, 0};
-    static const char PROGMEM shift_off_2[] = {0xab, 0xac, 0};
-    static const char PROGMEM shift_on_1[] = {0xcd, 0xce, 0};
-    static const char PROGMEM shift_on_2[] = {0xcf, 0xd0, 0};
-
-    // fillers between the modifier icons bleed into the icon frames
-    static const char PROGMEM off_off_1[] = {0xc5, 0};
-    static const char PROGMEM off_off_2[] = {0xc6, 0};
-    static const char PROGMEM on_off_1[] = {0xc7, 0};
-    static const char PROGMEM on_off_2[] = {0xc8, 0};
-    static const char PROGMEM off_on_1[] = {0xc9, 0};
-    static const char PROGMEM off_on_2[] = {0xca, 0};
-    static const char PROGMEM on_on_1[] = {0xcb, 0};
-    static const char PROGMEM on_on_2[] = {0xcc, 0};
-
-    if(modifiers & MOD_MASK_CTRL) {
-        oled_write_P(ctrl_on_1, false);
-    } else {
-        oled_write_P(ctrl_off_1, false);
-    }
-
-    if ((modifiers & MOD_MASK_CTRL) && (modifiers & MOD_MASK_SHIFT)) {
-        oled_write_P(on_on_1, false);
-    } else if(modifiers & MOD_MASK_CTRL) {
-        oled_write_P(on_off_1, false);
-    } else if(modifiers & MOD_MASK_SHIFT) {
-        oled_write_P(off_on_1, false);
-    } else {
-        oled_write_P(off_off_1, false);
-    }
-
-    if(modifiers & MOD_MASK_SHIFT) {
-        oled_write_P(shift_on_1, false);
-    } else {
-        oled_write_P(shift_off_1, false);
-    }
-
-    if(modifiers & MOD_MASK_CTRL) {
-        oled_write_P(ctrl_on_2, false);
-    } else {
-        oled_write_P(ctrl_off_2, false);
-    }
-
-    if (modifiers & MOD_MASK_CTRL & MOD_MASK_SHIFT) {
-        oled_write_P(on_on_2, false);
-    } else if(modifiers & MOD_MASK_CTRL) {
-        oled_write_P(on_off_2, false);
-    } else if(modifiers & MOD_MASK_SHIFT) {
-        oled_write_P(off_on_2, false);
-    } else {
-        oled_write_P(off_off_2, false);
-    }
-
-    if(modifiers & MOD_MASK_SHIFT) {
-        oled_write_P(shift_on_2, false);
-    } else {
-        oled_write_P(shift_off_2, false);
-    }
-}
-
-bool oled_task_user() {
-    oled_clear();
-    render_logo();
-    render_logo_text();
-    render_space();
-    render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
-    render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
-    render_space();
-
-    // Switch on current active layer
-    switch (get_highest_layer(layer_state)) {
-        case _MAC_DEFAULT :
-            oled_write("Main", false);
-            break;
-        case _WIN_DEFAULT :
-            oled_write("Type", false);
-            break;
-        case _SYMBOL : 
-            oled_write("Sym", false);
-            break;
-        case _NAVIGATION :
-            oled_write("Nav", false);
-            break;
-		case _NUMBER :
-            oled_write("Number", false);
-            break;
-        case _MEDIA:
-            oled_write("Media", false);
-            break;
-		case _GAMING :
-            oled_write("Let's\nGame", false);
-            break;
-    }
-
-    return false;
-}
-
-#endif
 
 
 #if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
@@ -491,7 +220,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
  *
  * The index parameter tells you which encoder was turned. If you only have
  * one encoder, the index will always be zero.
- * 
+ *
  * The clockwise parameter tells you the direction of the encoder. It'll be
  * true when you turned the encoder clockwise, and false otherwise.
  */
@@ -499,10 +228,10 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
   /* With an if statement we can check which encoder was turned. */
   if (index == 0) { /* First encoder */
   /* Encoder not soldered*/
-  } 
-  if (index == 1) { /* First encoder */
-	switch(biton32(layer_state)){
-             case 2:
+  }
+  if (index == 1) { /* Second encoder */
+	switch(get_highest_layer(layer_state)){
+             case _SYMBOL:
                 if (clockwise){
                     tap_code(KC_VOLU);
                 } else{
